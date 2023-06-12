@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ControlComponentNoCarry</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.7.2/prop-types.min.js"></script>
+  
+  <div id = 'temp'></div>
+  <script type="text/babel">
+    class Login extends React.Component{
+      state = {
+        username:'',
+        password:''
+      }
+      /*
+      高階參數
+      如果Ａ函數，接收的參數是一個函數
+      如果Ａ函數調用的返回值仍是一個函數
+
+      函數柯里化
+      透過函式呼叫函式，最終將參數統一處理
+      */
+      saveFormData = (dataType, event)=>{
+        this.setState({[dataType]:event.target.value})
+      }
+      handleSubmit = (event) =>{
+        event.preventDefault();
+        const{username, password} = this.state
+        alert(`你的帳號是：${username}，你的密碼是：${password}`)
+      }
+      render(){
+        return (
+          <form onSubmit={this.handleSubmit}>
+            帳號：<input onChange={(event)=>{this.saveFormData('username', event)}} type="text" name="username"/>
+            密碼：<input onChange={(event)=>{this.saveFormData('password', event)}} type="password" name="password"/>
+            <button>登入</button>
+          </form>
+        )
+      }
+    }
+
+    ReactDOM.render(<Login/>, document.getElementById('temp'));
+    
+  </script>
+</body>
+</html>

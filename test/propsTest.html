@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.7.2/prop-types.min.js"></script>
+  
+  <div id = 'temp'></div>
+  <div id = 'temp2'></div>
+  <div id = 'temp3'></div>
+  <div id = 'temp4'></div>
+  <script type="text/babel">
+    class Person extends React.Component{
+
+      static propTypes = {
+        name: PropTypes.string.isRequired,
+        sex: PropTypes.string,
+        age: PropTypes.number
+      };
+
+      static defaultProps = {
+        sex:'null',
+        age:0
+      };
+      
+      render(){
+        const {name, sex, age} = this.props;
+        return (
+          <ul>
+            <li>姓名：{name}</li>
+            <li>性別：{sex}</li>
+            <li>年紀：{age}</li>
+          </ul>
+        )
+      }
+
+    }
+    ReactDOM.render(<Person name="小明" sex="男" age={20} />, document.getElementById('temp'));
+
+    ReactDOM.render(<Person name="小竹" sex="女" age={23} />, document.getElementById('temp2'));
+
+    const p = {name:"小旗", sex:"男", age:24}
+    ReactDOM.render(<Person {...p} />, document.getElementById('temp3'));
+    ReactDOM.render(<Person />, document.getElementById('temp4'));
+    
+  </script>
+</body>
+</html>
