@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>liftLoop</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/react@16.8.4/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@16.8.4/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.7.2/prop-types.min.js"></script>
+
+  <div id='temp'></div>
+  <div id='temp2'></div>
+  <div id='temp3'></div>
+  <div id='temp4'></div>
+  <script type="text/babel">
+    class Lift extends React.Component {
+
+      state = {
+        opacity: 1
+      };
+
+      death = () => {
+        ReactDOM.unmountComponentAtNode(document.getElementById('temp'))
+      }
+
+      componentDidMount() { // 組件出生了 Hook
+        this.timer = setInterval(() => {
+          let { opacity } = this.state;
+          opacity -= 0.1;
+          if (opacity <= 0) opacity = 1;
+          this.setState({ opacity });
+          console.log('!!')
+        },
+          200
+        );
+      }
+
+      componentWillUnmount() { // 組件交代後事 Hook
+        clearInterval(this.timer)
+      }
+
+      render() {
+        return (
+          <div>
+            <h2 style={{ opacity: this.state.opacity }}>React學不會怎麼辦</h2>
+            <button onClick={this.death}>不活了</button>
+          </div>
+        )
+      }
+
+    }
+
+    class Count extends React.Component {
+
+      constructor(props) {
+        console.log('count--constructor');
+        super(props);
+        //初始化狀態
+        this.state = { count: 0 }
+      }
+
+      //加一按鈕的callback
+      add = () => {
+        //獲取原狀態
+        const { count } = this.state
+        //更新狀態
+        this.setState({ count: count + 1 })
+      }
+
+      //卸載組件按鈕的callback
+      death = () => {
+        ReactDOM.unmountComponentAtNode(document.getElementById('temp'))
+      }
+
+      //強制更新的按鈕回掉
+      force = () => {
+        this.forceUpdate()
+      }
+
+      componentWillMount() {
+        console.log('count--componentWillMount')
+      }
+
+      componentDidMount() {
+        console.log('count--componentDidMount')
+      }
+
+      componentWillReceiveProps() {
+        console.log('count--componentWillReceiveProps')
+      }
+
+      shouldComponentUpdate() {
+        console.log('count--shouldComponentUpdate')
+        return true
+      }
+
+      componentWillUpdate() {
+        console.log('count--componentWillUpdate')
+      }
+
+      componentDidUpdate() {
+        console.log('count--componentDidUpdate')
+      }
+
+      componentWillUnmount() {
+        console.log('count--componentWillUnmount')
+      }
+      render() {
+        console.log('count--render')
+        const { count } = this.state
+        return (
+          <div>
+            <h2>當前總和:{count}</h2>
+            <button onClick={this.add}>+1</button>
+            <button onClick={this.death}>Unmount</button>
+            <button onClick={this.force}>Force update</button>
+          </div>
+        )
+      }
+    }
+
+    class A extends React.Component {
+
+      state = { carName: '賓士' }
+
+      changeCar = () => {
+        this.setState({ carName: '跑跑卡丁車' })
+      }
+
+      render() {
+        return (
+          <div>
+            <div>我是A組件</div>
+            <button onClick={this.changeCar}>換車</button>
+            <B carName={this.state.carName} />
+          </div>
+
+        )
+      }
+    }
+    class B extends React.Component {
+      
+      componentWillReceiveProps() {
+        console.log('count--componentWillReceiveProps')
+      }
+
+      render() {
+        return (
+          <div>
+            <div>我是B組件，車是{this.props.carName}</div>
+          </div>
+        )
+      }
+    }
+    
+    ReactDOM.render(<Count />, document.getElementById('temp'));
+    ReactDOM.render(<A />, document.getElementById('temp2'));
+  </script>
+</body>
+
+</html>
