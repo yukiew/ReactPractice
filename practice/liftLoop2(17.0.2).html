@@ -83,17 +83,22 @@
         this.forceUpdate()
       }
 
-      static getDerivedStateFromProps(){ // State的值任何時候都取決props
+      static getDerivedStateFromProps(props, state){ // 若State的值任何時候都取決props，可以使用
         console.log('count--getDerivedStateFromProps')
         return null
+      }
+
+      getSnapshotBeforeUpdate(){ //在更新後，將snapshot傳遞給componentDidUpdate
+        console.log('count--getSnapshotBeforeUpdate')
+        return 'Yuk'
       }
 
       componentDidMount() {
         console.log('count--componentDidMount')
       }
 
-      shouldComponentUpdate() {
-        console.log('count--shouldComponentUpdate')
+      shouldComponentUpdate(preProps, preState, snapshot) {
+        console.log('count--shouldComponentUpdate', preProps, preState, snapshot)
         return true
       }
 

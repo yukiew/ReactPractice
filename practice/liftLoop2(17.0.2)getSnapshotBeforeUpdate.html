@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>liftLoopSnapshot</title>
+  <style>
+    .list{
+      width: 200px;
+      height: 150px;
+      background-color: skyblue;
+      overflow: auto;
+    }
+    .new{
+      height: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/react@17.0.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.0/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.7.2/prop-types.min.js"></script>
+
+  <div id='temp'></div>
+  <div id='temp2'></div>
+  <div id='temp3'></div>
+  <div id='temp4'></div>
+  <script type="text/babel">
+    class NewsList extends React.Component{
+      state  = {newsArr:[]}
+      componentDidMount(){
+        setInterval(()=>{
+          //獲取原狀態
+          const {newsArr} = this.state
+          //模擬一條新聞
+          const news = '新聞'+(newsArr.length+1)
+          //更新狀態
+          this.setState({newsArr:[news,...newsArr]})
+        }, 1000)
+      }
+
+      getSnapshotBeforeUpdate(props, state){
+        return this.ref.scrollHeight
+      }
+
+      componentDidUpdate(preProps, preState, snapshot){
+        this.ref.scrollTop += this.ref.scrollHeight-snapshot
+        console.log(this.ref.scrollTop)
+        console.log(this.ref.scrollHeight)
+        console.log(snapshot)
+      }
+
+      render(){
+        return(
+          <div className="list" ref={(el) => (this.ref = el)}>
+            {
+              this.state.newsArr.map((n, index)=>{
+                return <div className="news" key={index}>{n}</div>
+              })
+            }
+          </div>
+        )
+      }
+
+    }
+    ReactDOM.render(<NewsList />, document.getElementById('temp'));
+  </script>
+</body>
+
+</html>
